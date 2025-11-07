@@ -5,12 +5,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AuthorsModule } from './features/authors/authors.module';
 import { AuthModule } from './features/auth/auth.module';
 import { join } from 'path';
+import { Env } from './config/constants/env';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://nil1234:password%40123@cluster0.lgdlirv.mongodb.net/?appName=Cluster0',
-    ),
+    MongooseModule.forRoot(Env.DB_URI ?? ''),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
