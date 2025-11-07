@@ -1,0 +1,39 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Author"""
+type Author {
+  _id: ID!
+  firstName: String!
+  lastName: String
+  email: String!
+}
+
+"""auth"""
+type Auth {
+  accessToken: String!
+  refreshToken: String!
+  author: Author!
+}
+
+type Query {
+  author(email: String!): Author!
+}
+
+type Mutation {
+  login(input: LoginPayload!): Auth!
+  signUp(input: SignupPayload!): Auth!
+}
+
+input LoginPayload {
+  email: String!
+  password: String!
+}
+
+input SignupPayload {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String
+}
