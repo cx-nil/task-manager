@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { LoginPayload } from '../../dto/auth/login-payload.dto';
 import { AuthorService } from '../authors/author.service';
 import { SignupPayload } from 'src/dto/auth/signup-payload.dto';
+import type { AuthPayload } from '../../config/types/auth';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,10 @@ export class AuthService {
 
   async login(payload: LoginPayload) {
     const user = await this.validateUser(payload);
-    const authPayload = { email: user.email, sub: user._id };
+    const authPayload: AuthPayload = {
+      email: user.email,
+      sub: user._id.toString(),
+    };
     return {
       accessToken: this.jwtService.sign(authPayload),
       refreshToken: '', // TODO: Implement refresh token logic
@@ -39,7 +43,10 @@ export class AuthService {
 
   async signUp(payload: SignupPayload) {
     const newUser = await this.authorService.create(payload);
-    const authPayload = { email: newUser.email, sub: newUser._id };
+    const authPayload: AuthPayload = {
+      email: newUser.email,
+      sub: newUser._id.toString(),
+    };
     return {
       accessToken: this.jwtService.sign(authPayload),
       refreshToken: '', // TODO: Implement refresh token logic
