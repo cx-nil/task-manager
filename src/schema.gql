@@ -19,6 +19,7 @@ type Auth {
 
 type Query {
   author(email: String!): Author!
+  getCurrentUser: Author!
 }
 
 type Mutation {

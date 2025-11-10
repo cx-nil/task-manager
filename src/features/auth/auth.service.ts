@@ -5,7 +5,8 @@ import bcrypt from 'bcrypt';
 import { LoginPayload } from '../../dto/auth/login-payload.dto';
 import { AuthorService } from '../authors/author.service';
 import { SignupPayload } from 'src/dto/auth/signup-payload.dto';
-import type { AuthPayload } from '../../config/types/auth';
+import type { Auth } from '../../config/types/auth';
+import { Author } from '../../schemas/author.schema';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,7 @@ export class AuthService {
 
   async login(payload: LoginPayload) {
     const user = await this.validateUser(payload);
-    const authPayload: AuthPayload = {
+    const authPayload: Auth = {
       email: user.email,
       sub: user._id.toString(),
     };
@@ -43,7 +44,7 @@ export class AuthService {
 
   async signUp(payload: SignupPayload) {
     const newUser = await this.authorService.create(payload);
-    const authPayload: AuthPayload = {
+    const authPayload: Auth = {
       email: newUser.email,
       sub: newUser._id.toString(),
     };
@@ -52,5 +53,9 @@ export class AuthService {
       refreshToken: '', // TODO: Implement refresh token logic
       author: newUser,
     };
+  }
+
+  async findOneByEmail(email: string): Promise<Author | null> {
+    return this.authorService.findOneByEmail(email);
   }
 }

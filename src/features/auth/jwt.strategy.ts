@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Env } from '../../config/constants/env';
-import type { AuthPayload } from '../../config/types/auth';
+import type { Auth } from '../../config/types/auth';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(private authService: AuthService) {
     if (!Env.JWT_SECRET_KEY) {
       throw new Error('JWT secret key is not defined');
     }
@@ -16,7 +17,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: AuthPayload) {
-    return { userId: payload.sub, email: payload.email };
+  async validate(payload: Auth) {
+    console.log('JwtStrategy.validate - Payload:', payload);
+    const user = await this.authService.findOneByEmail(payload.email);
+    if (!user || !payload) {
+      throw new UnauthorizedException();
+    }
+    return user;
   }
 }

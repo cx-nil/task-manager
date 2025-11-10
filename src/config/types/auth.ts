@@ -1,4 +1,4 @@
-export type AuthPayload = {
+export type Auth = {
   sub: string;
   email: string;
 };
