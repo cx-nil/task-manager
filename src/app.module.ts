@@ -14,6 +14,12 @@ import { Env } from './config/constants/env';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       graphiql: true,
+      formatError: (error) => ({
+        message: error.message || 'Internal Server Error',
+        extensions: {
+          code: error.extensions?.code,
+        },
+      }),
     }),
     AuthorsModule,
     AuthModule,
