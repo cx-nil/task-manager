@@ -6,7 +6,7 @@ import { AuthorService } from '../authors/author.service';
 import { LoginPayload } from '../../dto/auth/login-payload.dto';
 import { RefreshTokenPayload } from '../../dto/auth/refresh-token-payload.dto';
 import { SignupPayload } from '../../dto/auth/signup-payload.dto';
-import type { Auth, SignInOptions } from '../../config/types/auth';
+import type { Auth, SignInOptions } from '../../config/types/auth.type';
 import { Author } from '../../schemas/author.schema';
 import { Env } from '../../config/constants/env';
 

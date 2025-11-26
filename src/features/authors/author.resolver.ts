@@ -3,7 +3,7 @@ import { UseGuards } from '@nestjs/common';
 import { Author } from './models/author.model';
 import { AuthorService } from './author.service';
 import { CurrentUser } from '../../decorators/current-user.decorator';
-import type { Auth } from '../../config/types/auth';
+import type { Auth } from '../../config/types/auth.type';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 
 @Resolver(() => Author)
