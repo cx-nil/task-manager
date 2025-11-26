@@ -24,7 +24,8 @@ type Query {
 
 type Mutation {
   login(input: LoginPayload!): Auth!
-  signUp(input: SignupPayload!): Auth!
+  signup(input: SignupPayload!): Auth!
+  getAccessToken(input: RefreshTokenPayload!): Auth!
 }
 
 input LoginPayload {
@@ -37,4 +38,8 @@ input SignupPayload {
   password: String!
   firstName: String!
   lastName: String
+}
+
+input RefreshTokenPayload {
+  refreshToken: String!
 }

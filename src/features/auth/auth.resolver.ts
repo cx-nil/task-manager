@@ -1,8 +1,9 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { LoginPayload } from '../../dto/auth/login-payload.dto';
+import { SignupPayload } from '../../dto/auth/signup-payload.dto';
+import { RefreshTokenPayload } from '../../dto/auth/refresh-token-payload.dto';
 import { Auth } from './models/auth.model';
-import { LoginPayload } from 'src/dto/auth/login-payload.dto';
 import { AuthService } from './auth.service';
-import { SignupPayload } from 'src/dto/auth/signup-payload.dto';
 
 @Resolver()
 export class AuthResolver {
@@ -15,8 +16,14 @@ export class AuthResolver {
   }
 
   @Mutation(() => Auth)
-  async signUp(@Args('input') payload: SignupPayload) {
+  async signup(@Args('input') payload: SignupPayload) {
     const response = await this.authService.signUp(payload);
+    return response;
+  }
+
+  @Mutation(() => Auth)
+  async getAccessToken(@Args('input') payload: RefreshTokenPayload) {
+    const response = await this.authService.generateAccessToken(payload);
     return response;
   }
 }

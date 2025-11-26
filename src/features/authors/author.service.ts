@@ -1,29 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 import { Author } from '../../schemas/author.schema';
-// import { Author } from './models/author.model';
 import { SignupPayload } from '../../dto/auth/signup-payload.dto';
+import { AuthorRepository } from 'src/repositories/author.repository';
 
 @Injectable()
 export class AuthorService {
-  constructor(@InjectModel(Author.name) private authorModel: Model<Author>) {}
+  constructor(private readonly authorRepository: AuthorRepository) {}
 
   async findOneByEmail(email: string): Promise<Author | null> {
-    const user = await this.authorModel.findOne({ email }).lean();
-    if (!user) return null;
-    return user;
+    return await this.getUser({ email });
+  }
+
+  async getUser({
+    email,
+    _id,
+  }: {
+    email?: string;
+    _id?: string;
+  }): Promise<Author | null> {
+    if (email) {
+      return await this.authorRepository.findByEmail(email);
+    }
+    if (_id) {
+      return await this.authorRepository.findById(_id);
+    }
+    return null;
   }
 
   async create(payload: SignupPayload): Promise<Author> {
     const { password } = payload;
     const hashedPassword = await bcrypt.hash(password, 12);
-    const user = new this.authorModel({
+    const user = await this.authorRepository.create({
       ...payload,
       password: hashedPassword,
     });
-    return user.save();
+    return user;
   }
 }

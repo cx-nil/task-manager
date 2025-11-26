@@ -6,5 +6,10 @@ export const Env = {
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
   JWT_TOKEN_EXPIRATION: Number(process.env.JWT_TOKEN_EXPIRATION),
 
+  JWT_REFRESH_SECRET_KEY: process.env.JWT_REFRESH_SECRET_KEY,
+  JWT_REFRESH_TOKEN_EXPIRATION: Number(
+    process.env.JWT_REFRESH_TOKEN_EXPIRATION,
+  ),
+
   DB_URI: process.env.DB_URI,
 };
